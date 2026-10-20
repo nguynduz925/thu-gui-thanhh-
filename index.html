@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Thư gửi Thanhh Thảoo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+:root{
+  --peach:#fbd9cb; --coral:#e2646b; --btn:#f58f87; --ink:#4a1a22; --paper:#fffaf2; --text:#7a4046;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%;margin:0}
+body{background:var(--peach);font-family:"Patrick Hand","Segoe Print","Comic Sans MS",cursive;color:var(--text);overflow-x:hidden}
+.page{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 14px 28px;gap:6px}
+h1{
+  margin:0;text-align:center;text-transform:uppercase;font-weight:400;
+  font-size:clamp(34px,9vw,66px);line-height:1.1;letter-spacing:.02em;color:var(--coral);
+  opacity:0;transform:translateY(-14px);animation:drop .9s .2s cubic-bezier(.2,.9,.3,1) forwards;
+}
+.scene{width:min(96vw,580px);margin:0 auto}
+svg{display:block;width:100%;height:auto;overflow:visible}
+.bunny{animation:bob 2.6s ease-in-out infinite alternate}
+.env{cursor:pointer;transform-origin:310px 380px;animation:wiggle 3.4s 1.5s ease-in-out infinite}
+.env:focus-visible{outline:none}
+.env:focus-visible .back{stroke:var(--coral);stroke-width:4}
+.page.open .env{animation:none;cursor:default}
+.flapF{transform-origin:310px 270px;transition:transform .35s ease-in}
+.flapB{transform-origin:310px 270px;transform:scaleY(0);transition:transform .35s ease-out .3s}
+.page.open .flapF{transform:scaleY(0)}
+.page.open .flapB{transform:scaleY(1)}
+.fl{transform:scale(0);transition:transform .9s cubic-bezier(.2,1.35,.4,1) calc(.55s + var(--dl))}
+.page.open .fl{transform:scale(1)}
+.hint{
+  margin:2px 0 0;font-size:22px;color:var(--coral);min-height:44px;text-align:center;
+  opacity:0;animation:fade .8s 1.4s forwards;
+}
+.page.open .hint{display:none}
+button{
+  font:inherit;font-size:20px;cursor:pointer;color:var(--ink);background:var(--btn);
+  border:0;border-radius:999px;padding:10px 26px;transition:transform .2s ease;
+}
+button:hover{transform:scale(1.05)}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+#again{display:none;margin-top:4px}
+#again.show{display:inline-block}
+
+/* Lá thư */
+.wrap{
+  position:fixed;inset:0;z-index:10;display:flex;overflow-y:auto;padding:18px;
+  background:rgba(251,217,203,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+  opacity:0;pointer-events:none;transition:opacity .4s ease;
+}
+.wrap.show{opacity:1;pointer-events:auto}
+.paper{
+  margin:auto;width:100%;max-width:460px;padding:26px 28px 22px;border-radius:6px;
+  background:var(--paper);
+  background-image:repeating-linear-gradient(to bottom,transparent 0 33px,#f3dccf 33px 34px);
+  box-shadow:0 18px 50px rgba(160,70,70,.28);
+  transform:translateY(90px) rotate(-4deg) scale(.7);transition:transform .7s cubic-bezier(.2,1.15,.4,1);
+}
+.wrap.show .paper{transform:rotate(-.6deg)}
+.paper h2{margin:0 0 6px;font-weight:400;font-size:30px;line-height:34px;color:var(--coral)}
+.paper p{margin:0;font-size:21px;line-height:34px}
+.paper p+p{margin-top:0}
+.paper .sign{margin-top:10px;text-align:right;color:var(--coral)}
+.paper .row{text-align:center;margin-top:12px}
+
+@keyframes drop{to{opacity:1;transform:none}}
+@keyframes fade{to{opacity:1}}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-5px)}}
+@keyframes wiggle{0%,86%,100%{transform:rotate(0)}90%{transform:rotate(-2.5deg)}94%{transform:rotate(2.5deg)}98%{transform:rotate(-1.2deg)}}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01s!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01s!important;transition-delay:0s!important}
+}
+</style>
+</head>
+<body>
+<main class="page" id="page">
+  <h1 id="title"></h1>
+
+  <div class="scene">
+    <svg viewBox="0 0 440 400" role="img" aria-label="Chú thỏ cầm hoa đang giữ một lá thư đã đóng kín">
+      <defs>
+        <pattern id="hearts" width="40" height="34" patternUnits="userSpaceOnUse">
+          <path d="M10 16C-3 7 3-2 10 4C17-2 23 7 10 16Z" transform="translate(8 6)" fill="#f7bfb5"/>
+        </pattern>
+      </defs>
+
+      <!-- Phong bì: lớp sau, nắp mở, hoa, rồi túi trước -->
+      <g class="env" id="env" role="button" tabindex="0" aria-label="Mở lá thư">
+        <rect class="back" x="200" y="270" width="220" height="110" rx="8" fill="#e8d3c0"/>
+        <path class="flapB" d="M200 270L420 270L310 205Z" fill="#f4d6c2"/>
+        <g id="flowers"></g>
+        <path d="M200 270L310 335L420 270L420 372Q420 380 412 380L208 380Q200 380 200 372Z" fill="#fff4e8"/>
+        <path d="M200 270L310 335L420 270L420 372Q420 380 412 380L208 380Q200 380 200 372Z" fill="url(#hearts)"/>
+        <g class="flapF">
+          <path d="M200 270L420 270L310 335Z" fill="#fde9d9" stroke="#f1cfbd" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M200 270L420 270L310 335Z" fill="url(#hearts)"/>
+        </g>
+      </g>
+
+      <!-- Chú thỏ cầm hoa -->
+      <g class="bunny" stroke="#2b2b2b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M86 300C80 335 84 366 90 380L166 380C172 360 172 330 164 300Z" fill="#fff"/>
+        <path d="M96 232C74 190 82 160 100 164C112 168 114 205 114 224Z" fill="#fff"/>
+        <path d="M136 226C140 190 152 164 168 170C182 178 170 208 154 232Z" fill="#fff"/>
+        <ellipse cx="125" cy="262" rx="62" ry="48" fill="#fff"/>
+        <circle cx="105" cy="258" r="3.6" fill="#2b2b2b" stroke="none"/>
+        <circle cx="147" cy="258" r="3.6" fill="#2b2b2b" stroke="none"/>
+        <circle cx="86" cy="272" r="10" fill="#f6b9bd" stroke="none"/>
+        <circle cx="164" cy="272" r="10" fill="#f6b9bd" stroke="none"/>
+        <path d="M119 270Q126 278 133 270" fill="none" stroke-width="3.5"/>
+        <path d="M90 298L160 298L125 334Z" fill="#f7c4cb"/>
+        <path d="M118 316L104 356L126 348Z" fill="#f7c4cb"/>
+        <path d="M134 316L148 354L128 348Z" fill="#f7c4cb" stroke-width="4"/>
+        <!-- tay trái cầm hoa hồng -->
+        <path d="M90 322Q62 318 54 296" fill="none"/>
+        <path d="M52 296L50 270" fill="none" stroke-width="4"/>
+        <path d="M51 286Q64 282 70 292Q60 298 51 290Z" fill="#9fcf7e" stroke-width="3"/>
+        <g fill="#f9c4b8" stroke-width="3.5">
+          <circle cx="50" cy="248" r="9"/><circle cx="61" cy="256" r="9"/><circle cx="57" cy="268" r="9"/>
+          <circle cx="43" cy="268" r="9"/><circle cx="39" cy="256" r="9"/><circle cx="50" cy="260" r="7" fill="#f6a99b" stroke="none"/>
+        </g>
+        <circle cx="53" cy="298" r="8" fill="#fff"/>
+        <!-- tay phải đỡ lá thư -->
+        <path d="M162 322Q184 336 204 340" fill="none"/>
+        <circle cx="206" cy="341" r="9" fill="#fff"/>
+      </g>
+    </svg>
+  </div>
+
+  <p class="hint" id="hint">Chạm vào lá thư để mở nhé</p>
+  <button id="again" type="button">Đọc lại thư</button>
+</main>
+
+<div class="wrap" id="wrap" role="dialog" aria-modal="true" aria-labelledby="ltitle" aria-hidden="true">
+  <article class="paper">
+    <h2 id="ltitle"></h2>
+    <p>Nhân ngày 20/10, mình chúc <span class="nm"></span> luôn xinh đẹp, rạng rỡ và thật nhiều niềm vui.</p>
+    <p>Chúc cổ luôn mạnh mẽ khi cần, dịu dàng khi muốn, và luôn nhận được yêu thương xứng đáng dành cho cổ.</p>
+    <p>Cảm ơn cổ vì đã xuất hiện và làm thế giới ảnh dịu dàng hơn rất nhiều. Mong mỗi ngày của cổ đều có hoa, có nắng và hãy nhớ luôn có người nhớ đến cố.</p>
+    <p class="sign">Một người luôn nghĩ đến cổ 🌷</p>
+    <div class="row"><button id="fold" type="button">Gấp thư lại</button></div>
+  </article>
+</div>
+
+<script>
+(function(){
+  var NAME = "Thanhh Th\u1ea3oo"; // đổi tên người nhận ở đây
+
+  document.getElementById("title").textContent = "G\u1eedi cho " + NAME;
+  document.getElementById("ltitle").textContent = "G\u1eedi " + NAME + ",";
+  Array.prototype.forEach.call(document.querySelectorAll(".nm"), function(e){ e.textContent = NAME; });
+
+  /* ---- Hoa trong phong bì ---- */
+  var BX = 310, BY = 318, P = "#f4a79f", Y = "#f9c846";
+  function tulip(s, c){
+    return '<ellipse cx="0" cy="0" rx="'+s*.42+'" ry="'+s*.75+'" fill="'+c+'"/>' +
+      '<ellipse cx="'+-s*.3+'" cy="'+s*.05+'" rx="'+s*.3+'" ry="'+s*.65+'" fill="'+c+'" transform="rotate(-16)"/>' +
+      '<ellipse cx="'+s*.3+'" cy="'+s*.05+'" rx="'+s*.3+'" ry="'+s*.65+'" fill="'+c+'" transform="rotate(16)"/>' +
+      '<path d="M0 '+s*.7+'L0 '+-s*.4+'" stroke="#00000022" stroke-width="2" fill="none"/>';
+  }
+  function ring(n, rx, ry, cy, fill, extra){
+    var o = "";
+    for(var k = 0; k < n; k++) o += '<ellipse cx="0" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="'+fill+'" '+(extra||"")+' transform="rotate('+(k*360/n)+')"/>';
+    return o;
+  }
+  function peony(s, c){ return ring(7, s*.32, s*.5, -s*.35, c, 'stroke="#e98d86" stroke-width=".8"') + '<circle r="'+s*.15+'" fill="#ee8f8f"/>'; }
+  function daisy(s, c){ return ring(12, s*.12, s*.4, -s*.4, c) + '<circle r="'+s*.17+'" fill="#e6a417"/>'; }
+  function tiny(s){ var o = ring(5, s*.32, s*.32, -s*.45, "#a9dfe3"); return o + '<circle r="'+s*.2+'" fill="#fff"/>'; }
+  function cup(s, c){
+    var st = "";
+    [-14,-5,6,15].forEach(function(a){ st += '<path d="M0 0L'+a*.9+' '+-s*.55+'" stroke="#4a2a3a" stroke-width="1.8" fill="none"/><circle cx="'+a*.9+'" cy="'+-s*.58+'" r="2" fill="#4a2a3a"/>'; });
+    return '<ellipse cx="'+-s*.3+'" cy="'+-s*.1+'" rx="'+s*.38+'" ry="'+s*.55+'" fill="'+c+'" transform="rotate(-24)"/>' +
+      '<ellipse cx="'+s*.3+'" cy="'+-s*.1+'" rx="'+s*.38+'" ry="'+s*.55+'" fill="'+c+'" transform="rotate(24)"/>' + st;
+  }
+  var specs = [
+    {t:"leaf", x:285, a:-34, len:96, c:"#5f8f57", dl:0},
+    {t:"leaf", x:335, a:30, len:90, c:"#7aa968", dl:.05},
+    {t:"leaf", x:305, a:-8, len:110, c:"#4f8450", dl:.02},
+    {t:"f", x:262, y:118, h:tulip(28, P), dl:.12},
+    {t:"f", x:238, y:170, h:tulip(21, "#f6b9ae"), dl:.2},
+    {t:"f", x:304, y:112, h:tulip(19, Y), dl:.26},
+    {t:"f", x:290, y:188, h:peony(36, "#f6aca6"), dl:.3},
+    {t:"f", x:352, y:140, h:daisy(32, Y), dl:.36},
+    {t:"f", x:334, y:218, h:daisy(21, Y), dl:.42},
+    {t:"f", x:392, y:150, h:tiny(12), dl:.46, thin:1},
+    {t:"f", x:408, y:208, h:tiny(11), dl:.5, thin:1},
+    {t:"f", x:224, y:222, h:tiny(11), dl:.52, thin:1},
+    {t:"f", x:372, y:96, h:tiny(10), dl:.56, thin:1},
+    {t:"f", x:386, y:250, h:cup(32, "#f7c0b8"), dl:.6},
+    {t:"f", x:240, y:258, h:cup(24, "#f9cdc4"), dl:.66}
+  ];
+  var out = "";
+  specs.forEach(function(s){
+    var g = '<g class="fl" style="--dl:'+s.dl+'s;transform-origin:'+BX+'px '+BY+'px">';
+    if(s.t === "leaf"){
+      g += '<path d="M0 0Q16 '+-s.len*.5+' 0 '+-s.len+'Q-16 '+-s.len*.5+' 0 0Z" fill="'+s.c+'" transform="translate('+s.x+' 300) rotate('+s.a+')"/>';
+    } else {
+      var bx = BX + (s.x - BX) * .18, w = s.thin ? 2 : 3.5, col = s.thin ? "#8c9b5a" : "#6a9b5e";
+      g += '<path d="M'+bx+' '+BY+'Q'+((bx+s.x)/2)+' '+(s.y+(BY-s.y)*.5)+' '+s.x+' '+(s.y+8)+'" stroke="'+col+'" stroke-width="'+w+'" fill="none" stroke-linecap="round"/>';
+      g += '<g transform="translate('+s.x+' '+s.y+')">'+s.h+'</g>';
+    }
+    out += g + '</g>';
+  });
+  document.getElementById("flowers").innerHTML = out;
+
+  /* ---- Mở thư ---- */
+  var page = document.getElementById("page"), env = document.getElementById("env"),
+      wrap = document.getElementById("wrap"), again = document.getElementById("again"), opened = false;
+  function showLetter(){ wrap.classList.add("show"); wrap.setAttribute("aria-hidden","false"); document.getElementById("fold").focus({preventScroll:true}); }
+  function hideLetter(){ wrap.classList.remove("show"); wrap.setAttribute("aria-hidden","true"); again.classList.add("show"); again.focus({preventScroll:true}); }
+  function open(){
+    if(opened) return; opened = true;
+    page.classList.add("open"); env.removeAttribute("tabindex"); env.removeAttribute("role"); env.removeAttribute("aria-label");
+    setTimeout(showLetter, 2100);
+  }
+  env.addEventListener("click", open);
+  env.addEventListener("keydown", function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); open(); } });
+  document.getElementById("fold").addEventListener("click", hideLetter);
+  again.addEventListener("click", showLetter);
+  document.addEventListener("keydown", function(e){ if(e.key === "Escape" && wrap.classList.contains("show")) hideLetter(); });
+})();
+</script>
+</body>
+</html>
