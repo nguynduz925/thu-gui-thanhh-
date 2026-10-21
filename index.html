@@ -3,229 +3,369 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Thư gửi Thanhh Thảoo</title>
+<title>Tiệm hoa chỉ mở một ngày trong năm</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 <style>
-:root{
-  --peach:#fbd9cb; --coral:#e2646b; --btn:#f58f87; --ink:#4a1a22; --paper:#fffaf2; --text:#7a4046;
-  box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px);
-}
+:root{--cream:#fbf5e6;--ink:#4b3b36;--soft:#8a7468;--rose:#c8466f;--pink:#e5557f;--leaf:#6ea25c;--paper:#f6e4a6;
+  --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;--script:"Dancing Script","Segoe Script",cursive;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *,*::before,*::after{box-sizing:inherit}
 html,body{height:100%;margin:0}
-body{background:var(--peach);font-family:"Patrick Hand","Segoe Print","Comic Sans MS",cursive;color:var(--text);overflow-x:hidden}
-.page{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 14px 28px;gap:6px}
-h1{
-  margin:0;text-align:center;text-transform:uppercase;font-weight:400;
-  font-size:clamp(34px,9vw,66px);line-height:1.1;letter-spacing:.02em;color:var(--coral);
-  opacity:0;transform:translateY(-14px);animation:drop .9s .2s cubic-bezier(.2,.9,.3,1) forwards;
-}
-.scene{width:min(96vw,580px);margin:0 auto}
-svg{display:block;width:100%;height:auto;overflow:visible}
-.bunny{animation:bob 2.6s ease-in-out infinite alternate}
-.env{cursor:pointer;transform-origin:310px 380px;animation:wiggle 3.4s 1.5s ease-in-out infinite}
-.env:focus-visible{outline:none}
-.env:focus-visible .back{stroke:var(--coral);stroke-width:4}
-.page.open .env{animation:none;cursor:default}
-.flapF{transform-origin:310px 270px;transition:transform .35s ease-in}
-.flapB{transform-origin:310px 270px;transform:scaleY(0);transition:transform .35s ease-out .3s}
-.page.open .flapF{transform:scaleY(0)}
-.page.open .flapB{transform:scaleY(1)}
-.fl{transform:scale(0);transition:transform .9s cubic-bezier(.2,1.35,.4,1) calc(.55s + var(--dl))}
-.page.open .fl{transform:scale(1)}
-.hint{
-  margin:2px 0 0;font-size:22px;color:var(--coral);min-height:44px;text-align:center;
-  opacity:0;animation:fade .8s 1.4s forwards;
-}
-.page.open .hint{display:none}
-button{
-  font:inherit;font-size:20px;cursor:pointer;color:var(--ink);background:var(--btn);
-  border:0;border-radius:999px;padding:10px 26px;transition:transform .2s ease;
-}
-button:hover{transform:scale(1.05)}
-button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
-#again{display:none;margin-top:4px}
-#again.show{display:inline-block}
+body{font-family:var(--serif);color:var(--ink);overflow:hidden;
+  background:radial-gradient(circle at 18% 8%,#fff 0,var(--cream) 46%,#f4e8cc 100%)}
+.scene{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  padding:18px;overflow-y:auto;opacity:0;visibility:hidden;transition:opacity .7s ease,visibility .7s}
+.scene.on{opacity:1;visibility:visible}
+h1{margin:0;font-weight:500;text-align:center;font-size:clamp(30px,6.4vw,54px);line-height:1.15}
+.sc{font-family:var(--script);font-weight:600;color:var(--rose)}
+.sub{margin:0;text-align:center;font-style:italic;font-size:clamp(16px,3.4vw,20px);color:var(--soft);min-height:1.4em}
+.kicker{margin:0;font-size:16px;color:var(--soft);font-style:italic}
+
+/* Cảnh 1 */
+.shopwrap{display:flex;flex-direction:column;align-items:center;gap:14px}
+.copy{display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
+.shop{width:min(86vw,400px);cursor:pointer;display:block;border:0;background:none;padding:0;font:inherit}
+.shop svg{width:100%;height:auto;display:block;overflow:visible}
+.shop:focus-visible{outline:3px solid var(--rose);outline-offset:6px;border-radius:12px}
+.door,.glow{transition:transform 1.1s cubic-bezier(.5,0,.2,1),opacity 1.1s}
+.door{transform-box:fill-box;transform-origin:0 50%}
+.glow{opacity:0}
+.shop.open .door{transform:scaleX(.1)}
+.shop.open .glow{opacity:.75}
+.shop:not(.open){animation:nudge 3.6s 1.5s ease-in-out infinite}
+@keyframes nudge{0%,88%,100%{transform:none}92%{transform:rotate(-1.2deg)}96%{transform:rotate(1.2deg)}}
+@media(min-width:860px){.shopwrap{flex-direction:row;gap:56px}.copy{align-items:flex-start;text-align:left}.copy h1{text-align:left}}
+
+/* Cảnh 2-3-4 */
+.make{display:flex;align-items:center;justify-content:center;flex-wrap:wrap}
+.picker{display:flex;gap:6px;align-items:flex-end;justify-content:center;max-width:560px;overflow:hidden;
+  padding-bottom:10px;border-bottom:6px solid #e6c995;border-radius:3px;margin:0 22px 12px;
+  transition:max-width .7s ease,opacity .5s,margin .7s,padding .7s,border-width .7s}
+.stage-tie .picker,.stage-done .picker{max-width:0;opacity:0;margin:0;padding:0;border-width:0;pointer-events:none}
+.pick{background:none;border:0;padding:0 2px;cursor:pointer;font:inherit;color:var(--soft);font-size:14px;
+  display:flex;flex-direction:column;align-items:center;gap:2px;transition:transform .25s}
+.pick svg{width:clamp(46px,12vw,64px);height:auto;display:block}
+.pick:hover{transform:translateY(-6px)}
+.pick:active{transform:scale(.92)}
+.pick:focus-visible{outline:3px solid var(--rose);outline-offset:3px;border-radius:8px}
+.pick:disabled{cursor:default;opacity:.6;transform:none}
+.bq{position:relative;width:260px;height:340px;flex:none;transition:transform .8s cubic-bezier(.3,1.2,.4,1)}
+.stage-tie .bq,.stage-done .bq{transform:scale(1.18);margin:26px 0}
+.stage-tie .bq{cursor:pointer;animation:sway 2.4s ease-in-out infinite alternate}
+.stage-tie .bq:focus-visible{outline:3px solid var(--rose);outline-offset:6px;border-radius:14px}
+@keyframes sway{from{rotate:-1.5deg}to{rotate:1.5deg}}
+.fls{position:absolute;inset:0;clip-path:path("M0 0H260V96H240C244 156 208 212 168 226L148 240H112C50 232 16 170 20 104H0Z")}
+.fl{position:absolute;left:98px;top:60px;width:64px;height:150px;transform-origin:32px 34px;
+  transform:rotate(var(--r)) scale(var(--s));animation:pop .7s cubic-bezier(.2,1.3,.4,1) both}
+.fl svg{width:100%;height:100%;display:block;overflow:visible}
+@keyframes pop{from{opacity:0;transform:translateY(-70px) rotate(var(--r)) scale(.3)}to{opacity:1;transform:rotate(var(--r)) scale(var(--s))}}
+.wrapsvg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.bowg{transform-box:fill-box;transform-origin:50% 50%;transform:scale(0);opacity:0}
+.tied .bowg{animation:tie .9s .3s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes tie{0%{transform:scale(0) rotate(-40deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
+.note{position:absolute;right:-34px;bottom:2px;width:104px;padding:10px 8px 9px;border:0;border-radius:6px;background:#fffdf7;
+  box-shadow:0 8px 20px rgba(120,80,60,.22);font:inherit;color:var(--ink);cursor:pointer;text-align:center;
+  transform:rotate(7deg) scale(0);transition:transform .7s cubic-bezier(.2,1.4,.4,1)}
+.stage-done .note{transform:rotate(7deg) scale(1);transition-delay:.3s}
+.note .to{display:block;font-family:var(--script);font-size:17px;line-height:1.15;color:var(--rose)}
+.note .go{display:inline-block;margin-top:6px;padding:3px 12px;border-radius:99px;background:var(--pink);color:#fff;font-size:13px}
+.stage-done .note:hover{transform:rotate(3deg) scale(1.06)}
+.note:not(:focus-visible){outline:none}
+.stage-pick .note,.stage-tie .note{visibility:hidden}
+.note:focus-visible{outline:3px solid var(--rose);outline-offset:3px}
+.count{margin:0;font-size:17px;color:var(--soft);min-height:1.4em}
+.stage-tie .count,.stage-done .count{visibility:hidden}
+
+.tail{transform-box:fill-box;transform-origin:50% 0}
+.tied .tl{animation:swingL 3.2s 1.1s ease-in-out infinite alternate}
+.tied .tr{animation:swingR 3.2s 1.1s ease-in-out infinite alternate}
+@keyframes swingL{from{transform:rotate(3deg)}to{transform:rotate(-4deg)}}
+@keyframes swingR{from{transform:rotate(-3deg)}to{transform:rotate(4deg)}}
+.bandg{transform-box:fill-box;transform-origin:50% 50%;transform:scaleX(0);opacity:0}
+.tied .bandg{animation:band .45s ease-out forwards}
+@keyframes band{from{transform:scaleX(0);opacity:1}to{transform:scaleX(1);opacity:1}}
+.spark path{transform-box:fill-box;transform-origin:50% 50%;opacity:0}
+.tied .spark path{animation:twinkle 1.4s .45s ease-out both}
+.tied .spark path:nth-child(2){animation-delay:.6s}.tied .spark path:nth-child(3){animation-delay:.75s}.tied .spark path:nth-child(4){animation-delay:.9s}
+@keyframes twinkle{0%{opacity:0;transform:scale(0) rotate(-30deg)}40%{opacity:1;transform:scale(1.25) rotate(0)}100%{opacity:0;transform:scale(.7) rotate(20deg)}}
+.stage-done .bq{filter:drop-shadow(0 12px 14px rgba(120,80,50,.18))}
+
+.tw{stroke-dasharray:1;stroke-dashoffset:1}
+.tied .tw{animation:draw .7s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.knot{transform-box:fill-box;transform-origin:50% 50%;transform:scale(0)}
+.tied .knot{animation:knot .4s .85s cubic-bezier(.2,1.8,.4,1) forwards}
+@keyframes knot{to{transform:scale(1)}}
+.bowg{transform:none;opacity:1}
+.tied .bowg{animation:none;transform:none;opacity:1}
 
 /* Lá thư */
-.wrap{
-  position:fixed;inset:0;z-index:10;display:flex;overflow-y:auto;padding:18px;
-  background:rgba(251,217,203,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
-  opacity:0;pointer-events:none;transition:opacity .4s ease;
-}
-.wrap.show{opacity:1;pointer-events:auto}
-.paper{
-  margin:auto;width:100%;max-width:460px;padding:26px 28px 22px;border-radius:6px;
-  background:var(--paper);
-  background-image:repeating-linear-gradient(to bottom,transparent 0 33px,#f3dccf 33px 34px);
-  box-shadow:0 18px 50px rgba(160,70,70,.28);
-  transform:translateY(90px) rotate(-4deg) scale(.7);transition:transform .7s cubic-bezier(.2,1.15,.4,1);
-}
-.wrap.show .paper{transform:rotate(-.6deg)}
-.paper h2{margin:0 0 6px;font-weight:400;font-size:30px;line-height:34px;color:var(--coral)}
-.paper p{margin:0;font-size:21px;line-height:34px}
-.paper p+p{margin-top:0}
-.paper .sign{margin-top:10px;text-align:right;color:var(--coral)}
-.paper .row{text-align:center;margin-top:12px}
-
-@keyframes drop{to{opacity:1;transform:none}}
-@keyframes fade{to{opacity:1}}
-@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-5px)}}
-@keyframes wiggle{0%,86%,100%{transform:rotate(0)}90%{transform:rotate(-2.5deg)}94%{transform:rotate(2.5deg)}98%{transform:rotate(-1.2deg)}}
-@media (prefers-reduced-motion:reduce){
-  *{animation-duration:.01s!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01s!important;transition-delay:0s!important}
-}
+.overlay{position:fixed;inset:0;z-index:10;display:flex;overflow-y:auto;padding:18px;background:rgba(75,59,54,.35);
+  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .4s}
+.overlay.show{opacity:1;pointer-events:auto}
+.letter{margin:auto;width:100%;max-width:600px;padding:30px 30px 24px;border-radius:8px;background:#fffaf0;position:relative;
+  box-shadow:0 22px 60px rgba(90,50,40,.3);transform:translateY(80px) rotate(-3deg) scale(.8);transition:transform .7s cubic-bezier(.2,1.15,.4,1)}
+.overlay.show .letter{transform:none}
+.letter h2{margin:0 0 12px;font-family:var(--script);font-weight:600;font-size:30px;color:var(--rose)}
+.letter p{margin:0 0 12px;font-size:19px;line-height:1.55}
+.polaroid{float:right;width:min(40%,190px);margin:0 0 10px 18px;padding:8px 8px 6px;background:#fff;border-radius:3px;
+  box-shadow:0 6px 16px rgba(90,50,40,.2);transform:rotate(2.5deg);text-align:center}
+.polaroid .ph{aspect-ratio:3/4;background:linear-gradient(160deg,#cfe6bd,#f7d6df);display:flex;align-items:center;justify-content:center;font-size:44px;overflow:hidden}
+.polaroid img{width:100%;height:100%;object-fit:cover;display:block}
+.polaroid figcaption{font-family:var(--script);font-size:14px;color:var(--soft);padding-top:6px}
+.sign{clear:both;text-align:right;font-family:var(--script);font-size:28px;color:var(--rose);margin-top:6px}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px;clear:both}
+button.btn{font:inherit;font-size:18px;cursor:pointer;border:0;border-radius:99px;padding:8px 22px;color:#fff;background:var(--pink);transition:transform .2s}
+button.btn.alt{background:#e9dcc6;color:var(--ink)}
+button.btn:hover{transform:scale(1.05)}
+button.btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+#again{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));translate:-50% 0;display:none;z-index:5}
+#again.show{display:flex}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01s!important;transition-delay:0s!important}}
 </style>
 </head>
 <body>
-<main class="page" id="page">
-  <h1 id="title"></h1>
 
-  <div class="scene">
-    <svg viewBox="0 0 440 400" role="img" aria-label="Chú thỏ cầm hoa đang giữ một lá thư đã đóng kín">
-      <defs>
-        <pattern id="hearts" width="40" height="34" patternUnits="userSpaceOnUse">
-          <path d="M10 16C-3 7 3-2 10 4C17-2 23 7 10 16Z" transform="translate(8 6)" fill="#f7bfb5"/>
-        </pattern>
-      </defs>
-
-      <!-- Phong bì: lớp sau, nắp mở, hoa, rồi túi trước -->
-      <g class="env" id="env" role="button" tabindex="0" aria-label="Mở lá thư">
-        <rect class="back" x="200" y="270" width="220" height="110" rx="8" fill="#e8d3c0"/>
-        <path class="flapB" d="M200 270L420 270L310 205Z" fill="#f4d6c2"/>
-        <g id="flowers"></g>
-        <path d="M200 270L310 335L420 270L420 372Q420 380 412 380L208 380Q200 380 200 372Z" fill="#fff4e8"/>
-        <path d="M200 270L310 335L420 270L420 372Q420 380 412 380L208 380Q200 380 200 372Z" fill="url(#hearts)"/>
-        <g class="flapF">
-          <path d="M200 270L420 270L310 335Z" fill="#fde9d9" stroke="#f1cfbd" stroke-width="1.5" stroke-linejoin="round"/>
-          <path d="M200 270L420 270L310 335Z" fill="url(#hearts)"/>
-        </g>
-      </g>
-
-      <!-- Chú thỏ cầm hoa -->
-      <g class="bunny" stroke="#2b2b2b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M86 300C80 335 84 366 90 380L166 380C172 360 172 330 164 300Z" fill="#fff"/>
-        <path d="M96 232C74 190 82 160 100 164C112 168 114 205 114 224Z" fill="#fff"/>
-        <path d="M136 226C140 190 152 164 168 170C182 178 170 208 154 232Z" fill="#fff"/>
-        <ellipse cx="125" cy="262" rx="62" ry="48" fill="#fff"/>
-        <circle cx="105" cy="258" r="3.6" fill="#2b2b2b" stroke="none"/>
-        <circle cx="147" cy="258" r="3.6" fill="#2b2b2b" stroke="none"/>
-        <circle cx="86" cy="272" r="10" fill="#f6b9bd" stroke="none"/>
-        <circle cx="164" cy="272" r="10" fill="#f6b9bd" stroke="none"/>
-        <path d="M119 270Q126 278 133 270" fill="none" stroke-width="3.5"/>
-        <path d="M90 298L160 298L125 334Z" fill="#f7c4cb"/>
-        <path d="M118 316L104 356L126 348Z" fill="#f7c4cb"/>
-        <path d="M134 316L148 354L128 348Z" fill="#f7c4cb" stroke-width="4"/>
-        <!-- tay trái cầm hoa hồng -->
-        <path d="M90 322Q62 318 54 296" fill="none"/>
-        <path d="M52 296L50 270" fill="none" stroke-width="4"/>
-        <path d="M51 286Q64 282 70 292Q60 298 51 290Z" fill="#9fcf7e" stroke-width="3"/>
-        <g fill="#f9c4b8" stroke-width="3.5">
-          <circle cx="50" cy="248" r="9"/><circle cx="61" cy="256" r="9"/><circle cx="57" cy="268" r="9"/>
-          <circle cx="43" cy="268" r="9"/><circle cx="39" cy="256" r="9"/><circle cx="50" cy="260" r="7" fill="#f6a99b" stroke="none"/>
-        </g>
-        <circle cx="53" cy="298" r="8" fill="#fff"/>
-        <!-- tay phải đỡ lá thư -->
-        <path d="M162 322Q184 336 204 340" fill="none"/>
-        <circle cx="206" cy="341" r="9" fill="#fff"/>
-      </g>
-    </svg>
+<!-- Cảnh 1: tiệm hoa -->
+<section class="scene on" id="s1">
+  <div class="shopwrap">
+    <div class="copy">
+      <p class="kicker">20 tháng 10, một ngày thật đặc biệt</p>
+      <h1>Tiệm hoa<br>chỉ mở <span class="sc">một ngày</span><br>trong năm.</h1>
+      <p class="sub" id="shopHint">Chạm vào cửa tiệm để bước vào nhé.</p>
+    </div>
+    <button class="shop" id="shop" type="button" aria-label="Mở cửa tiệm hoa">
+      <svg viewBox="0 0 320 290" role="img" aria-label="Tiệm hoa nhỏ có mái hiên sọc hồng">
+        <path d="M40 72L68 26H252L280 72Z" fill="#a9c98b"/>
+        <rect x="40" y="72" width="240" height="198" fill="#f8edc8"/>
+        <rect x="76" y="82" width="168" height="40" rx="3" fill="#fffaf0" stroke="#e3d7b5"/>
+        <text x="160" y="100" text-anchor="middle" font-family="Cormorant Garamond,Georgia,serif" font-size="14" font-weight="600" fill="#4b3b36" id="signName"></text>
+        <text x="160" y="113" text-anchor="middle" font-family="Cormorant Garamond,Georgia,serif" font-size="8" font-style="italic" fill="#8a7468">flowers &amp; little love notes</text>
+        <g id="awn"></g>
+        <path d="M62 250V198Q62 170 104 170Q146 170 146 198V250Z" fill="#d7ebc6" stroke="#6ea25c" stroke-width="5"/>
+        <path d="M104 170V250M62 210H146" stroke="#6ea25c" stroke-width="3"/>
+        <rect x="58" y="246" width="92" height="8" rx="2" fill="#c9825a"/>
+        <circle cx="76" cy="238" r="6" fill="#e8719a"/><circle cx="104" cy="238" r="6" fill="#fff" stroke="#e4dccb"/><circle cx="104" cy="238" r="2.5" fill="#f0a91c"/><circle cx="132" cy="238" r="6" fill="#d9457a"/>
+        <rect x="182" y="168" width="78" height="102" fill="#6ea25c"/>
+        <rect x="190" y="176" width="62" height="94" fill="#ffe98a"/>
+        <ellipse class="glow" cx="221" cy="276" rx="60" ry="14" fill="#fff3b0"/>
+        <g class="door"><rect x="190" y="176" width="62" height="94" fill="#8fbf7a"/><rect x="198" y="186" width="46" height="36" rx="3" fill="#cfe6bd"/><circle cx="240" cy="228" r="3.5" fill="#f3dc8c"/></g>
+        <rect x="28" y="270" width="264" height="6" rx="3" fill="#e3d7b5"/>
+        <path d="M20 246H46L42 272H24Z" fill="#d98a62"/><path d="M33 246V222" stroke="#6ea25c" stroke-width="3"/><circle cx="33" cy="214" r="10" fill="#f2c230"/><circle cx="33" cy="214" r="5" fill="#a8741f"/>
+      </svg>
+    </button>
   </div>
+</section>
 
-  <p class="hint" id="hint">Chạm vào lá thư để mở nhé</p>
-  <button id="again" type="button">Đọc lại thư</button>
-</main>
+<!-- Cảnh 2-3-4: chọn hoa, thắt nơ, thiệp -->
+<section class="scene stage-pick" id="s2">
+  <h1 id="t2"></h1>
+  <p class="sub" id="sub2"></p>
+  <div class="make">
+    <div class="picker" id="picker"></div>
+    <div class="bq" id="bq" tabindex="-1">
+      <svg class="wrapsvg" viewBox="0 0 260 340" aria-hidden="true">
+        <defs>
+          <filter id="wc" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3"/></filter>
+          <filter id="sf" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.8"/></filter>
+          <linearGradient id="kr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0e1bf"/><stop offset=".5" stop-color="#e4cea2"/><stop offset="1" stop-color="#d2b685"/></linearGradient>
+        </defs>
+        <ellipse cx="130" cy="338" rx="66" ry="5" fill="#8a6a50" opacity=".16"/>
+        <g filter="url(#wc)">
+          <g fill="#7f9c64"><ellipse cx="60" cy="38" rx="5" ry="17" transform="rotate(-28 60 38)"/><ellipse cx="202" cy="36" rx="5" ry="17" transform="rotate(28 202 36)" fill="#8aa56f"/><ellipse cx="52" cy="98" rx="5" ry="13" transform="rotate(-72 52 98)" fill="#8aa56f"/><ellipse cx="208" cy="102" rx="5" ry="13" transform="rotate(72 208 102)"/><ellipse cx="92" cy="22" rx="3" ry="8" transform="rotate(-10 92 22)" fill="#93ad78"/><ellipse cx="170" cy="24" rx="3" ry="8" transform="rotate(14 170 24)" fill="#93ad78"/></g>
+          <path d="M20 104Q12 80 40 78Q130 62 220 76Q250 80 240 96L170 196L90 196Z" fill="#e0cba6"/>
+        </g>
+      </svg>
+      <div class="fls" id="fls"></div>
+      <svg class="wrapsvg" viewBox="0 0 260 340" aria-hidden="true">
+        <g filter="url(#wc)">
+          <path d="M20 104C48 128 92 156 128 174C164 156 206 124 240 96C244 156 208 212 168 226L148 240C154 264 178 296 190 332L184 340L172 330L160 341L148 330L136 342L124 331L112 341L100 330L88 340L76 331L70 332C82 296 106 264 112 240C50 232 16 170 20 104Z" fill="url(#kr)" stroke="#cdb185" stroke-width="1.5" stroke-linejoin="round"/>
+          <g filter="url(#sf)">
+            <path d="M240 96C238 150 205 195 170 224L148 240L150 232C146 205 140 190 128 174C164 156 206 124 240 96Z" fill="#cfb384" opacity=".45"/>
+            <path d="M100 172Q128 192 156 172L138 216L120 216Z" fill="#b99a69" opacity=".42"/>
+            <path d="M64 176L112 240L96 266L82 232Z" fill="#c5a878" opacity=".38"/>
+            <path d="M196 170L148 240L164 268L178 232Z" fill="#bd9e6e" opacity=".38"/>
+            <path d="M98 256Q90 296 94 332L108 332Q106 296 113 256Z" fill="#b89a6c" opacity=".35"/>
+            <path d="M139 256Q146 296 152 332L166 332Q156 296 147 256Z" fill="#b89a6c" opacity=".35"/>
+          </g>
+          <path d="M20 104C48 128 92 156 142 176C148 200 150 222 150 240L112 240C100 226 40 170 20 104Z" fill="#f7ead0" opacity=".32"/>
+          <path d="M36 122L146 236M226 112L112 236" fill="none" stroke="#b99a69" stroke-width="1.4" stroke-linecap="round" opacity=".7"/>
+          <path d="M39 118L149 232M229 108L115 232" fill="none" stroke="#fbf0d8" stroke-width="2.4" stroke-linecap="round" opacity=".5"/>
+          <path d="M114 246Q95.0 292 82 330 M119 246Q110.0 292 95 330 M124 246Q113.0 292 108 330 M129 246Q128.0 292 121 330 M134 246Q131.5 292 135 330 M139 246Q146.5 292 148 330 M144 246Q150.0 292 162 330 M148 246Q165.0 292 176 330" fill="none" stroke="#b2935f" stroke-width="2.6" stroke-linecap="round" opacity=".7"/>
+          <path d="M117 248Q98.0 292 85 328 M122 248Q113.0 292 98 328 M127 248Q116.0 292 111 328 M132 248Q131.0 292 124 328 M137 248Q134.5 292 138 328 M142 248Q149.5 292 151 328 M147 248Q153.0 292 165 328 M151 248Q168.0 292 179 328" fill="none" stroke="#fcf5e2" stroke-width="2.4" stroke-linecap="round" opacity=".75"/>
+          <path d="M20 104C48 128 92 156 128 174C164 156 206 124 240 96" fill="none" stroke="#bf9f6e" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M24 111C52 134 94 161 128 180C164 161 204 130 236 103" fill="none" stroke="#fbf0d8" stroke-width="2.4" stroke-linecap="round" opacity=".6"/>
+          <path d="M240 96Q248 128 230 162" fill="none" stroke="#b89868" stroke-width="1.4" stroke-linecap="round"/>
+        </g>
+        <g class="bowg" id="bow">
+          <path class="tw" pathLength="1" style="animation-delay:0s" d="M108 240Q130 254 152 240" fill="none" stroke="#a5835c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path class="tw" pathLength="1" style="animation-delay:0.08s" d="M110 246Q130 259 150 246" fill="none" stroke="#a5835c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          <g class="tail tl"><path class="tw" pathLength="1" style="animation-delay:0.7s" d="M126 251C102 262 82 276 60 292" fill="none" stroke="#a5835c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path class="tw" pathLength="1" style="animation-delay:0.75s" d="M128 252C116 268 108 280 102 296" fill="none" stroke="#a5835c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g>
+          <g class="tail tr"><path class="tw" pathLength="1" style="animation-delay:0.7s" d="M134 251C162 258 192 268 216 282" fill="none" stroke="#a5835c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path class="tw" pathLength="1" style="animation-delay:0.75s" d="M132 252C142 266 148 278 152 292" fill="none" stroke="#a5835c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g>
+          <path class="tw" pathLength="1" style="animation-delay:0.4s" d="M130 247C106 224 62 226 66 248C70 266 110 260 130 249" fill="none" stroke="#a5835c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path class="tw" pathLength="1" style="animation-delay:0.5s" d="M130 247C110 234 82 236 84 248C86 258 112 254 130 249" fill="none" stroke="#a5835c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path class="tw" pathLength="1" style="animation-delay:0.45s" d="M130.0 247C154.0 224 198.0 226 194.0 248C190.0 266 150.0 260 130.0 249" fill="none" stroke="#a5835c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path class="tw" pathLength="1" style="animation-delay:0.55s" d="M130.0 247C150.0 234 178.0 236 176.0 248C174.0 258 148.0 254 130.0 249" fill="none" stroke="#a5835c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle class="knot" cx="130" cy="247" r="4.4" fill="#a5835c"/>
+        </g>
+        <g class="spark" fill="#fff4b8" stroke="#f0c040" stroke-width="1"><path d="M40 206l3 8 8 3-8 3-3 8-3-8-8-3 8-3z"/><path d="M214 196l2.5 6.5 6.5 2.5-6.5 2.5-2.5 6.5-2.5-6.5-6.5-2.5 6.5-2.5z"/><path d="M222 276l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="M34 282l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/></g>
+      </svg>
+      <button class="note" id="note" type="button" aria-label="Mở thiệp"><span class="to">Gửi người<br>Anh thương ♡</span><span class="go">Mở thiệp</span></button>
+    </div>
+  </div>
+  <p class="count" id="count"></p>
+</section>
 
-<div class="wrap" id="wrap" role="dialog" aria-modal="true" aria-labelledby="ltitle" aria-hidden="true">
-  <article class="paper">
-    <h2 id="ltitle"></h2>
-    <p>Nhân ngày 20/10, mình chúc <span class="nm"></span> luôn xinh đẹp, rạng rỡ và thật nhiều niềm vui.</p>
-    <p>Chúc cổ luôn mạnh mẽ khi cần, dịu dàng khi muốn, và luôn nhận được yêu thương xứng đáng dành cho cổ.</p>
-    <p>Cảm ơn cổ vì đã xuất hiện và làm thế giới ảnh dịu dàng hơn rất nhiều. Mong mỗi ngày của cổ đều có hoa, có nắng và hãy nhớ luôn có người nhớ đến cố.</p>
-    <p class="sign">Một người luôn nghĩ đến cổ 🌷</p>
-    <div class="row"><button id="fold" type="button">Gấp thư lại</button></div>
+<button class="btn alt" id="again" type="button">Đọc lại thiệp</button>
+
+<!-- Lá thư -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="lt" aria-hidden="true">
+  <article class="letter">
+    <h2 id="lt"></h2>
+    <figure class="polaroid"><div class="ph" id="ph">🌷</div><figcaption>Người anh luôn muốn tặng hoa ♡</figcaption></figure>
+    <p>Nhân ngày 20/10, chúc <span class="you"></span>, người ảnh thương, thật nhiều niềm vui!</p>
+    <p>Ảnh muốn tặng <span class="you"></span> một bó hoa thật đặc biệt. Mỗi bông là một điều ảnh mong cho <span class="you"></span>: bình an, niềm vui, những ước mơ thành hiện thực và thật nhiều yêu thương.</p>
+    <p>Cảm ơn <span class="you"></span> vì những quan tâm nhỏ bé, những lần lắng nghe và nụ cười khiến ảnh thấy một ngày bình thường cũng trở nên đáng nhớ.</p>
+    <p>Hôm nay <span class="you"></span> cứ tự tin làm những điều mình thích nhé. Có ngày nào mệt thì nghỉ một chút, đừng quên dành sự dịu dàng cho chính mình.</p>
+    <p>Nếu có ai hỏi ảnh muốn tặng <span class="you"></span> điều gì, ảnh sẽ nói: một ngày thật vui và thật nhiều ngày sau vẫn được ở bên <span class="you"></span>.</p>
+    <p class="sign" id="sign"></p>
+    <div class="actions"><button class="btn" id="close" type="button">Đóng thiệp</button><button class="btn alt" id="restart" type="button">Làm lại từ đầu</button></div>
   </article>
 </div>
 
 <script>
 (function(){
-  var NAME = "Thanhh Th\u1ea3oo"; // đổi tên người nhận ở đây
+  /* ====== CHỈNH Ở ĐÂY ====== */
+  var NAME  = "Thanhh Thảoo";   // tên / biệt danh người nhận
+  var YOU   = "cổ";      // cách gọi người nhận trong thư
+  var ME    = "Ảnh";     // cách người gửi tự xưng khi ký tên
+  var PHOTO = "anhcuathor.jpg";        // đường dẫn ảnh, ví dụ "anh.jpg" (để trống = hiện hình hoa)
+  var TOTAL = 9;         // số bông hoa cần chọn (tối đa 9 vị trí trong bó)
+  /* ========================= */
 
-  document.getElementById("title").textContent = "G\u1eedi cho " + NAME;
-  document.getElementById("ltitle").textContent = "G\u1eedi " + NAME + ",";
-  Array.prototype.forEach.call(document.querySelectorAll(".nm"), function(e){ e.textContent = NAME; });
+  var $ = function(id){ return document.getElementById(id); };
+  document.title = "Tiệm hoa của " + NAME;
+  $("signName").textContent = "TIỆM HOA CỦA " + NAME.toUpperCase();
+  $("lt").textContent = "Gửi " + NAME + " của " + ME + ",";
+  $("sign").textContent = "Thương " + NAME + ", " + ME + " ♡";
+  Array.prototype.forEach.call(document.querySelectorAll(".you"), function(e){ e.textContent = YOU; });
+  if(PHOTO){ $("ph").innerHTML = '<img alt="" src="' + PHOTO + '">'; }
 
-  /* ---- Hoa trong phong bì ---- */
-  var BX = 310, BY = 318, P = "#f4a79f", Y = "#f9c846";
-  function tulip(s, c){
-    return '<ellipse cx="0" cy="0" rx="'+s*.42+'" ry="'+s*.75+'" fill="'+c+'"/>' +
-      '<ellipse cx="'+-s*.3+'" cy="'+s*.05+'" rx="'+s*.3+'" ry="'+s*.65+'" fill="'+c+'" transform="rotate(-16)"/>' +
-      '<ellipse cx="'+s*.3+'" cy="'+s*.05+'" rx="'+s*.3+'" ry="'+s*.65+'" fill="'+c+'" transform="rotate(16)"/>' +
-      '<path d="M0 '+s*.7+'L0 '+-s*.4+'" stroke="#00000022" stroke-width="2" fill="none"/>';
+  /* Mái hiên sọc */
+  var awn = "";
+  for(var i = 0; i < 8; i++){
+    var c = i % 2 ? "#fbe3e8" : "#e5557f", x = 30 + i * 32.5;
+    awn += '<rect x="'+x+'" y="124" width="32.5" height="26" fill="'+c+'"/><ellipse cx="'+(x+16.25)+'" cy="150" rx="16.25" ry="10" fill="'+c+'"/>';
   }
-  function ring(n, rx, ry, cy, fill, extra){
+  $("awn").innerHTML = awn;
+
+  /* Các loại hoa: thân + lá + đầu hoa, viewBox 64x150, tâm hoa ở (32,34) */
+  function petals(n, rx, ry, cy, fill, stroke){
     var o = "";
-    for(var k = 0; k < n; k++) o += '<ellipse cx="0" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="'+fill+'" '+(extra||"")+' transform="rotate('+(k*360/n)+')"/>';
+    for(var k = 0; k < n; k++) o += '<ellipse cx="32" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="'+fill+'" '+(stroke ? 'stroke="'+stroke+'" stroke-width="1"' : '')+' transform="rotate('+(k*360/n)+' 32 34)"/>';
     return o;
   }
-  function peony(s, c){ return ring(7, s*.32, s*.5, -s*.35, c, 'stroke="#e98d86" stroke-width=".8"') + '<circle r="'+s*.15+'" fill="#ee8f8f"/>'; }
-  function daisy(s, c){ return ring(12, s*.12, s*.4, -s*.4, c) + '<circle r="'+s*.17+'" fill="#e6a417"/>'; }
-  function tiny(s){ var o = ring(5, s*.32, s*.32, -s*.45, "#a9dfe3"); return o + '<circle r="'+s*.2+'" fill="#fff"/>'; }
-  function cup(s, c){
-    var st = "";
-    [-14,-5,6,15].forEach(function(a){ st += '<path d="M0 0L'+a*.9+' '+-s*.55+'" stroke="#4a2a3a" stroke-width="1.8" fill="none"/><circle cx="'+a*.9+'" cy="'+-s*.58+'" r="2" fill="#4a2a3a"/>'; });
-    return '<ellipse cx="'+-s*.3+'" cy="'+-s*.1+'" rx="'+s*.38+'" ry="'+s*.55+'" fill="'+c+'" transform="rotate(-24)"/>' +
-      '<ellipse cx="'+s*.3+'" cy="'+-s*.1+'" rx="'+s*.38+'" ry="'+s*.55+'" fill="'+c+'" transform="rotate(24)"/>' + st;
-  }
-  var specs = [
-    {t:"leaf", x:285, a:-34, len:96, c:"#5f8f57", dl:0},
-    {t:"leaf", x:335, a:30, len:90, c:"#7aa968", dl:.05},
-    {t:"leaf", x:305, a:-8, len:110, c:"#4f8450", dl:.02},
-    {t:"f", x:262, y:118, h:tulip(28, P), dl:.12},
-    {t:"f", x:238, y:170, h:tulip(21, "#f6b9ae"), dl:.2},
-    {t:"f", x:304, y:112, h:tulip(19, Y), dl:.26},
-    {t:"f", x:290, y:188, h:peony(36, "#f6aca6"), dl:.3},
-    {t:"f", x:352, y:140, h:daisy(32, Y), dl:.36},
-    {t:"f", x:334, y:218, h:daisy(21, Y), dl:.42},
-    {t:"f", x:392, y:150, h:tiny(12), dl:.46, thin:1},
-    {t:"f", x:408, y:208, h:tiny(11), dl:.5, thin:1},
-    {t:"f", x:224, y:222, h:tiny(11), dl:.52, thin:1},
-    {t:"f", x:372, y:96, h:tiny(10), dl:.56, thin:1},
-    {t:"f", x:386, y:250, h:cup(32, "#f7c0b8"), dl:.6},
-    {t:"f", x:240, y:258, h:cup(24, "#f9cdc4"), dl:.66}
+  var HEADS = {
+    tulip: '<path d="M32 50C14 48 12 28 14 10C22 14 28 22 32 34Z" fill="#e8719a"/><path d="M32 50C50 48 52 28 50 10C42 14 36 22 32 34Z" fill="#e8719a"/><path d="M32 50C22 44 22 22 32 6C42 22 42 44 32 50Z" fill="#f08fb0"/>',
+    sun:   function(){ return petals(12, 5.5, 12, 19, "#f2c230") + '<circle cx="32" cy="34" r="10" fill="#a8741f"/><circle cx="32" cy="34" r="5" fill="#7d5314"/>'; },
+    rose:  '<circle cx="32" cy="34" r="19" fill="#d9457a"/><circle cx="32" cy="34" r="13" fill="#e8628f"/><circle cx="32" cy="34" r="7" fill="#c93668"/><path d="M26 34Q32 26 38 34Q32 40 28 36" fill="none" stroke="#f7a8c4" stroke-width="2" stroke-linecap="round"/>',
+    daisy: function(){ return petals(10, 4.6, 13, 20, "#fff", "#e6dccb") + '<circle cx="32" cy="34" r="7.5" fill="#f0a91c"/>'; },
+    baby:  '<g stroke="#9bb083" stroke-width="1.6" fill="none"><path d="M32 150V60M32 70L14 38M32 62L24 20M32 66L44 22M32 72L52 44"/></g><g fill="#fff" stroke="#d3d3c2"><circle cx="14" cy="36" r="4"/><circle cx="24" cy="18" r="4"/><circle cx="44" cy="20" r="4"/><circle cx="52" cy="42" r="4"/><circle cx="32" cy="50" r="3.5"/><circle cx="20" cy="52" r="3"/></g>'
+  };
+  var TYPES = [
+    {k:"tulip", n:"Tulip"}, {k:"sun", n:"Hướng dương"}, {k:"rose", n:"Hồng"}, {k:"daisy", n:"Cúc nhỏ"}, {k:"baby", n:"Baby trắng"}
   ];
-  var out = "";
-  specs.forEach(function(s){
-    var g = '<g class="fl" style="--dl:'+s.dl+'s;transform-origin:'+BX+'px '+BY+'px">';
-    if(s.t === "leaf"){
-      g += '<path d="M0 0Q16 '+-s.len*.5+' 0 '+-s.len+'Q-16 '+-s.len*.5+' 0 0Z" fill="'+s.c+'" transform="translate('+s.x+' 300) rotate('+s.a+')"/>';
-    } else {
-      var bx = BX + (s.x - BX) * .18, w = s.thin ? 2 : 3.5, col = s.thin ? "#8c9b5a" : "#6a9b5e";
-      g += '<path d="M'+bx+' '+BY+'Q'+((bx+s.x)/2)+' '+(s.y+(BY-s.y)*.5)+' '+s.x+' '+(s.y+8)+'" stroke="'+col+'" stroke-width="'+w+'" fill="none" stroke-linecap="round"/>';
-      g += '<g transform="translate('+s.x+' '+s.y+')">'+s.h+'</g>';
-    }
-    out += g + '</g>';
-  });
-  document.getElementById("flowers").innerHTML = out;
-
-  /* ---- Mở thư ---- */
-  var page = document.getElementById("page"), env = document.getElementById("env"),
-      wrap = document.getElementById("wrap"), again = document.getElementById("again"), opened = false;
-  function showLetter(){ wrap.classList.add("show"); wrap.setAttribute("aria-hidden","false"); document.getElementById("fold").focus({preventScroll:true}); }
-  function hideLetter(){ wrap.classList.remove("show"); wrap.setAttribute("aria-hidden","true"); again.classList.add("show"); again.focus({preventScroll:true}); }
-  function open(){
-    if(opened) return; opened = true;
-    page.classList.add("open"); env.removeAttribute("tabindex"); env.removeAttribute("role"); env.removeAttribute("aria-label");
-    setTimeout(showLetter, 2100);
+  function flower(k){
+    var head = typeof HEADS[k] === "function" ? HEADS[k]() : HEADS[k];
+    var stem = k === "baby" ? "" : '<path d="M32 150V44" stroke="#5f9a55" stroke-width="4" stroke-linecap="round"/><path d="M32 112Q14 108 10 92Q26 94 32 112Z M32 100Q50 96 54 80Q38 82 32 100Z" fill="#8fbf7a" stroke="#5f9a55" stroke-width="1.5" stroke-linejoin="round"/>';
+    return '<svg viewBox="0 0 64 150" aria-hidden="true">' + stem + head + '</svg>';
   }
-  env.addEventListener("click", open);
-  env.addEventListener("keydown", function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); open(); } });
-  document.getElementById("fold").addEventListener("click", hideLetter);
-  again.addEventListener("click", showLetter);
-  document.addEventListener("keydown", function(e){ if(e.key === "Escape" && wrap.classList.contains("show")) hideLetter(); });
+
+  /* Trạng thái */
+  var s1 = $("s1"), s2 = $("s2"), shop = $("shop"), picker = $("picker"), fls = $("fls"), bq = $("bq"),
+      count = $("count"), t2 = $("t2"), sub2 = $("sub2"), overlay = $("overlay"), again = $("again"),
+      picks = 0, stage = "pick", busy = false;
+  var POS = [[130,88],[88,72],[172,72],[130,46],[60,104],[200,104],[96,116],[164,116],[130,130]], R = [0,-8,8,0,-10,10,-5,5,0];
+
+  function setStage(s){
+    stage = s; s2.className = "scene on stage-" + s;
+    if(s === "pick"){
+      t2.innerHTML = NAME + ' chọn hoa,<br>' + ME + ' gửi <span class="sc">yêu thương.</span>';
+      sub2.textContent = "Chạm từng bông hoa để đặt vào bó. Chọn đủ " + TOTAL + " bông để hoàn thành bó hoa.";
+      bq.setAttribute("tabindex", "-1"); bq.removeAttribute("role");
+    } else if(s === "tie"){
+      t2.innerHTML = 'Thắt một chiếc nơ,<br>gửi trọn <span class="sc">yêu thương.</span>';
+      sub2.textContent = "Chạm vào bó hoa để thắt nơ.";
+      bq.setAttribute("tabindex", "0"); bq.setAttribute("role", "button"); bq.setAttribute("aria-label", "Thắt nơ cho bó hoa");
+    } else {
+      t2.innerHTML = 'Một bó hoa,<br>cho người ' + ME + ' <span class="sc">thương nhất.</span>';
+      sub2.textContent = "Chạm vào tấm thiệp để đọc lời " + ME + " gửi.";
+      bq.setAttribute("tabindex", "-1"); bq.removeAttribute("role"); bq.removeAttribute("aria-label");
+    }
+  }
+  function updateCount(){ count.textContent = picks + " / " + TOTAL + " bông hoa"; }
+
+  /* Dựng danh sách hoa để chọn */
+  TYPES.forEach(function(t){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "pick"; b.setAttribute("aria-label", "Thêm " + t.n + " vào bó");
+    b.innerHTML = flower(t.k) + '<span>' + t.n + '</span>';
+    b.addEventListener("click", function(){ addFlower(t.k); });
+    picker.appendChild(b);
+  });
+
+  function addFlower(k){
+    if(stage !== "pick" || picks >= TOTAL) return;
+    var i = picks % POS.length, sc = k === "sun" ? .9 : k === "daisy" ? 1 : 1.15;
+    var d = document.createElement("div");
+    d.className = "fl"; d.style.left = (POS[i][0] - 32) + "px"; d.style.top = (POS[i][1] - 34) + "px";
+    d.style.setProperty("--r", R[i] + "deg"); d.style.setProperty("--s", sc);
+    d.innerHTML = flower(k); fls.appendChild(d);
+    picks++; updateCount();
+    if(picks >= TOTAL){
+      Array.prototype.forEach.call(picker.children, function(b){ b.disabled = true; });
+      setTimeout(function(){ setStage("tie"); }, 1000);
+    }
+  }
+
+  /* Cảnh 1 -> 2 */
+  function openShop(){
+    if(busy) return; busy = true;
+    shop.classList.add("open"); $("shopHint").textContent = "Cửa mở rồi, mời bạn vào…";
+    setTimeout(function(){ s1.classList.remove("on"); s2.classList.add("on"); }, 1700);
+  }
+  shop.addEventListener("click", openShop);
+
+  /* Thắt nơ */
+  function tieBow(){
+    if(stage !== "tie") return;
+    stage = "tying"; bq.classList.add("tied"); bq.style.animation = "none";
+    setTimeout(function(){ setStage("done"); bq.classList.add("tied"); }, 1800);
+  }
+  bq.addEventListener("click", tieBow);
+  bq.addEventListener("keydown", function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); tieBow(); } });
+
+  /* Thiệp */
+  function showLetter(){ overlay.classList.add("show"); overlay.setAttribute("aria-hidden", "false"); $("close").focus({preventScroll:true}); }
+  function hideLetter(){ overlay.classList.remove("show"); overlay.setAttribute("aria-hidden", "true"); again.classList.add("show"); }
+  $("note").addEventListener("click", function(e){ e.stopPropagation(); if(stage === "done") showLetter(); });
+  $("close").addEventListener("click", hideLetter);
+  again.addEventListener("click", function(){ again.classList.remove("show"); showLetter(); });
+  document.addEventListener("keydown", function(e){ if(e.key === "Escape" && overlay.classList.contains("show")) hideLetter(); });
+
+  /* Làm lại từ đầu */
+  $("restart").addEventListener("click", function(){
+    overlay.classList.remove("show"); overlay.setAttribute("aria-hidden", "true"); again.classList.remove("show");
+    picks = 0; fls.innerHTML = ""; bq.classList.remove("tied"); bq.style.animation = "";
+    Array.prototype.forEach.call(picker.children, function(b){ b.disabled = false; });
+    updateCount(); setStage("pick");
+    shop.classList.remove("open"); $("shopHint").textContent = "Chạm vào cửa tiệm để bước vào nhé."; busy = false;
+    s2.classList.remove("on"); s1.classList.add("on");
+  });
+
+  updateCount(); setStage("pick"); s2.classList.remove("on");
 })();
 </script>
 </body>
